@@ -1,19 +1,3 @@
-const DoctorMap = {
-  'One': 'First',
-  'Two': 'Second',
-  'Three': 'Third',
-  'Four': 'Fourth',
-  'Five': 'Fifth',
-  'Six': 'Sixth',
-  'Seven': 'Seventh',
-  'Eight': 'Eighth',
-  'Nine': 'Ninth',
-  'Ten': 'Tenth',
-  'Eleven': 'Eleventh',
-  'Twelve': 'Twelfth',
-  'Thirteen': 'Thirteenth'
-};
-
 const quoteContainer = document.getElementById('quote-container');
 const quoteText = quoteContainer.querySelector('#quote');
 const authorContainer = document.querySelector('.quote-author');
@@ -37,23 +21,17 @@ const hideLoadingAnimation = () => {
 // Get Quote From API
 async function getQuote() {
   addLoadingAnimation();
-  const apiURL = `https://dw-quote-api.herokuapp.com/quotes`;
+  const apiURL = `https://api.whatdoestrumpthink.com/api/v1/quotes/random`;
   try {
     const response = await fetch(apiURL);
     const data = await response.json();
-    const characterName = data[0].character;
-    if (characterName === 'The Doctor') {
-      authorName.innerText = `${DoctorMap[data[0].timeline]} ${characterName.slice(4)}`;
-    } else {
-      authorName.innerText = data[0].character;
-    }
     // Reduce font-size for long quotes
-    if (data[0].quote.length > 150) {
+    if (data.message.length > 150) {
       quoteText.classList.add('long-quote');
     } else {
       quoteText.classList.remove('long-quote');
     }
-    quoteText.innerText = data[0].quote;
+    quoteText.innerText = data.message;
     // Stop loading Animation
     hideLoadingAnimation();
   } catch (error) {
